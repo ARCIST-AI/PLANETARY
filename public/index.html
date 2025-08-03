@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Solar System Visualization</title>
+    <meta name="description" content="Professional-grade 3D solar system visualization with accurate astronomical data and N-body physics simulation">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <div id="app">
+        <div id="canvas-container">
+            <canvas id="solar-system-canvas"></canvas>
+        </div>
+        
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-content">
+                <h1>Solar System Visualization</h1>
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Initializing astronomical data...</p>
+                <div class="loading-progress-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="ui-container" class="ui-container">
+            <div id="tooltip-container" class="tooltip-container"></div>
+            
+            <div id="loading-screen" class="loading-screen">
+                <div class="loading-content">
+                    <h1>Solar System Visualization</h1>
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Initializing astronomical data...</p>
+                    <div class="loading-progress-bar">
+                        <div class="loading-progress"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="control-panel" class="control-panel">
+                <div id="toggle-panel" class="panel-toggle">−</div>
+                
+                <div id="time-controls" class="panel-section">
+                    <h3 class="panel-section-header">Time Controls</h3>
+                    <div class="control-group">
+                        <button id="play-pause" class="control-button">▶️</button>
+                        <button id="reset-time" class="control-button">↺</button>
+                    </div>
+                    <div class="control-group">
+                        <label for="time-speed">Speed:</label>
+                        <input type="range" id="time-speed" min="0.1" max="100" step="0.1" value="1">
+                        <span id="time-speed-value">1x</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="current-date">Date:</label>
+                        <input type="date" id="current-date">
+                    </div>
+                </div>
+                
+                <div id="view-settings" class="panel-section">
+                    <h3 class="panel-section-header">View Settings</h3>
+                    <div class="control-group">
+                        <label for="planet-size-scale">Planet Size Scale:</label>
+                        <input type="range" id="planet-size-scale" min="0.1" max="20" step="0.1" value="1">
+                        <span id="planet-size-scale-value">1x</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="distance-scale">Distance Scale:</label>
+                        <input type="range" id="distance-scale" min="0.001" max="1" step="0.001" value="0.1">
+                        <span id="distance-scale-value">0.1x</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="camera-speed">Camera Speed:</label>
+                        <input type="range" id="camera-speed" min="0.1" max="5" step="0.1" value="1">
+                        <span id="camera-speed-value">1x</span>
+                    </div>
+                </div>
+                
+                <div id="display-options" class="panel-section">
+                    <h3 class="panel-section-header">Display Options</h3>
+                    <div class="control-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="show-orbits" checked>
+                            <span class="toggle-slider"></span>
+                            Show Orbital Paths
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="show-labels" checked>
+                            <span class="toggle-slider"></span>
+                            Show Planet Labels
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="show-textures" checked>
+                            <span class="toggle-slider"></span>
+                            Show Planet Textures
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="show-starfield" checked>
+                            <span class="toggle-slider"></span>
+                            Show Star Field
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="show-grid">
+                            <span class="toggle-slider"></span>
+                            Show Grid
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="lighting-controls" class="panel-section">
+                    <h3 class="panel-section-header">Lighting Controls</h3>
+                    <div class="control-group">
+                        <label for="sun-intensity">Sun Intensity:</label>
+                        <input type="range" id="sun-intensity" min="0" max="3" step="0.1" value="1.5">
+                        <span id="sun-intensity-value">1.5</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="ambient-light">Ambient Light:</label>
+                        <input type="range" id="ambient-light" min="0" max="1" step="0.05" value="0.2">
+                        <span id="ambient-light-value">0.2</span>
+                    </div>
+                    <div class="control-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="show-shadows" checked>
+                            <span class="toggle-slider"></span>
+                            Show Shadows
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="planet-selection" class="panel-section">
+                    <h3 class="panel-section-header">Planet Selection</h3>
+                    <div class="control-group">
+                        <label for="planet-select">Select Planet:</label>
+                        <select id="planet-select" class="planet-select">
+                            <option value="">None (Free Camera)</option>
+                            <option value="sun">Sun</option>
+                            <option value="mercury">Mercury</option>
+                            <option value="venus">Venus</option>
+                            <option value="earth">Earth</option>
+                            <option value="mars">Mars</option>
+                            <option value="jupiter">Jupiter</option>
+                            <option value="saturn">Saturn</option>
+                            <option value="uranus">Uranus</option>
+                            <option value="neptune">Neptune</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="auto-follow-planet">
+                            <span class="toggle-slider"></span>
+                            Auto-Follow Planet
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="performance-settings" class="panel-section">
+                    <h3 class="panel-section-header">Performance Settings</h3>
+                    <div class="control-group">
+                        <label for="level-of-detail">Level of Detail:</label>
+                        <input type="range" id="level-of-detail" min="1" max="5" step="1" value="3">
+                        <span id="level-of-detail-value">3</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="fps-limit">FPS Limit:</label>
+                        <input type="range" id="fps-limit" min="15" max="120" step="5" value="60">
+                        <span id="fps-limit-value">60</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="info-panel" class="info-panel">
+                <div class="info-header">
+                    <h2 id="info-title">Solar System</h2>
+                    <button id="close-info" class="close-button">×</button>
+                </div>
+                <div class="info-content">
+                    <div id="info-description">Select an object to view information</div>
+                    <div id="info-details"></div>
+                    <div id="info-facts"></div>
+                </div>
+            </div>
+            
+            <div id="performance" class="performance-monitor">
+                <div class="perf-stat">
+                    <span>FPS:</span>
+                    <span id="fps-value">60</span>
+                </div>
+                <div class="perf-stat">
+                    <span>Objects:</span>
+                    <span id="object-count">0</span>
+                </div>
+                <div class="perf-stat">
+                    <span>Memory:</span>
+                    <span id="memory-usage">0 MB</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

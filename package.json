@@ -1,0 +1,50 @@
+{
+  "name": "planetary",
+  "version": "1.0.0",
+  "description": "Professional-grade 3D solar system visualization with accurate astronomical data and N-body physics simulation",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:runner": "node test-runner.js",
+    "lint": "eslint src --ext .js,.ts",
+    "lint:fix": "eslint src --ext .js,.ts --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "check": "node test-runner.js --all"
+  },
+  "keywords": [
+    "3d",
+    "solar-system",
+    "astronomy",
+    "three.js",
+    "webgl",
+    "n-body",
+    "physics",
+    "visualization",
+    "education"
+  ],
+  "author": "Solar System Visualization Team",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.161.0",
+    "mathjs": "^12.2.1",
+    "ml-matrix": "^6.10.7",
+    "lil-gui": "^0.18.2"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^1.3.1",
+    "vite": "^5.1.4",
+    "vitest": "^1.3.1",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
