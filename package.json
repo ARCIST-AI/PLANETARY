@@ -1,9 +1,17 @@
 {
   "name": "planetary",
   "version": "1.0.0",
-  "description": "Professional-grade 3D solar system visualization with accurate astronomical data and N-body physics simulation",
+  "description": "Professional-grade 3D solar system visualization with accurate astronomical data and N-body physics simulation. Built with Three.js and modern web technologies for interactive space exploration and education.",
   "type": "module",
   "main": "src/main.js",
+  "homepage": "https://github.com/your-username/planetary#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/planetary.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/planetary/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -25,24 +33,44 @@
     "webgl",
     "n-body",
     "physics",
+    "simulation",
     "visualization",
-    "education"
+    "education",
+    "space",
+    "planets",
+    "orbital-mechanics",
+    "javascript",
+    "webgl2",
+    "science",
+    "interactive",
+    "real-time"
   ],
-  "author": "Solar System Visualization Team",
+  "author": {
+    "name": "Solar System Visualization Team",
+    "email": "contact@planetary-project.org",
+    "url": "https://github.com/your-username/planetary"
+  },
+  "contributors": [
+    {
+      "name": "Claude Code",
+      "url": "https://claude.ai/code"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
-    "three": "^0.161.0",
+    "lil-gui": "^0.18.2",
     "mathjs": "^12.2.1",
     "ml-matrix": "^6.10.7",
-    "lil-gui": "^0.18.2"
+    "three": "^0.161.0"
   },
   "devDependencies": {
     "@vitest/ui": "^1.3.1",
-    "vite": "^5.1.4",
-    "vitest": "^1.3.1",
     "eslint": "^8.57.0",
+    "jsdom": "^26.1.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "vitest": "^1.3.1"
   },
   "engines": {
     "node": ">=18.0.0"

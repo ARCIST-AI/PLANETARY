@@ -9,8 +9,8 @@ export { KeplerianOrbit } from './KeplerianOrbit.js';
 export { Perturbations } from './Perturbations.js';
 export { CoordinateTransform } from './CoordinateTransform.js';
 
-// Export physics constants
-export { PhysicsConstants } from './PhysicsConstants.js';
+// Export physics constants from utils
+export { PHYSICS_CONSTANTS as PhysicsConstants } from '../utils/Constants.js';
 
 // Factory functions for creating physics objects
 

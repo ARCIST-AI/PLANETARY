@@ -1,88 +1,80 @@
 /**
- * Jest Test Setup
+ * Vitest Test Setup
  */
 
-// Mock DOM environment
-import { JSDOM } from 'jsdom';
-
-// Create a DOM environment
-const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
-  url: 'http://localhost:3000',
-  pretendToBeVisual: true
-});
-
-// Set global DOM objects
-global.window = dom.window;
-global.document = dom.window.document;
-global.navigator = dom.window.navigator;
+import { vi } from 'vitest';
+import { beforeEach, afterEach } from 'vitest';
 
 // Mock performance API
 global.performance = {
-  now: jest.fn(() => Date.now()),
-  mark: jest.fn(),
-  measure: jest.fn(),
-  getEntriesByName: jest.fn(() => []),
-  getEntriesByType: jest.fn(() => []),
-  clearMarks: jest.fn(),
-  clearMeasures: jest.fn()
+  ...global.performance,
+  now: vi.fn(() => Date.now()),
+  mark: vi.fn(),
+  measure: vi.fn(),
+  getEntriesByName: vi.fn(() => []),
+  getEntriesByType: vi.fn(() => []),
+  clearMarks: vi.fn(),
+  clearMeasures: vi.fn(),
+  setResourceTimingBufferSize: vi.fn(),
+  toJSON: vi.fn(() => ({})),
 };
 
 // Mock requestAnimationFrame
-global.requestAnimationFrame = jest.fn((callback) => {
-  return setTimeout(callback, 0);
+global.requestAnimationFrame = vi.fn((callback) => {
+  return setTimeout(callback, 16);
 });
 
 // Mock cancelAnimationFrame
-global.cancelAnimationFrame = jest.fn((id) => {
+global.cancelAnimationFrame = vi.fn((id) => {
   clearTimeout(id);
 });
 
 // Mock ResizeObserver
-global.ResizeObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn()
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn()
 }));
 
 // Mock IntersectionObserver
-global.IntersectionObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn()
+global.IntersectionObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn()
 }));
 
 // Mock console methods to reduce noise during tests
 global.console = {
   ...console,
-  log: jest.fn(),
-  debug: jest.fn(),
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn()
+  log: vi.fn(),
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn()
 };
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn()
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn()
 };
 global.localStorage = localStorageMock;
 
 // Mock sessionStorage
 const sessionStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn()
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn()
 };
 global.sessionStorage = sessionStorageMock;
 
-// Set up test environment
+// Setup DOM for tests
 beforeEach(() => {
-  // Clear all mocks before each test
-  jest.clearAllMocks();
+  // Clear all mocks
+  vi.clearAllMocks();
   
   // Reset DOM
   document.body.innerHTML = '';
@@ -102,7 +94,7 @@ beforeEach(() => {
   performance.now.mockReturnValue(Date.now());
 });
 
-// Clean up after all tests
-afterAll(() => {
-  // Clean up any global modifications
+afterEach(() => {
+  // Clean up DOM
+  document.body.innerHTML = '';
 });

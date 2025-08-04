@@ -2,22 +2,22 @@
  * Tooltip System Tests
  */
 
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
-import { TooltipSystemIntegration } from '../TooltipSystemIntegration.js';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { TooltipSystemIntegration } from '../index.js';
 
 // Mock dependencies
 const mockDependencies = {
   uiEngine: {
-    on: jest.fn(),
-    emit: jest.fn()
+    on: vi.fn(),
+    emit: vi.fn()
   },
   eventSystem: {
-    on: jest.fn(),
-    off: jest.fn(),
-    emit: jest.fn()
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
   },
   localization: {
-    get: jest.fn((key, language = 'en') => {
+    get: vi.fn((key, language = 'en') => {
       const translations = {
         'tooltip.sun.name': { en: 'Sun' },
         'tooltip.sun.description': { en: 'The Sun is the star at the center of our Solar System.' }
@@ -26,9 +26,9 @@ const mockDependencies = {
     })
   },
   performanceMonitor: {
-    start: jest.fn(() => performance.now()),
-    end: jest.fn(),
-    mark: jest.fn()
+    start: vi.fn(() => performance.now()),
+    end: vi.fn(),
+    mark: vi.fn()
   }
 };
 
@@ -37,15 +37,7 @@ describe('TooltipSystemIntegration', () => {
 
   beforeEach(() => {
     // Reset all mocks
-    Object.values(mockDependencies).forEach(dep => {
-      if (typeof dep === 'object' && dep !== null) {
-        Object.keys(dep).forEach(key => {
-          if (typeof dep[key] === 'function') {
-            dep[key].mockClear();
-          }
-        });
-      }
-    });
+    vi.clearAllMocks();
 
     // Create tooltip system instance
     tooltipSystem = new TooltipSystemIntegration({
@@ -82,7 +74,7 @@ describe('TooltipSystemIntegration', () => {
     it('should not initialize responsive tester by default', async () => {
       await tooltipSystem.initialize(mockDependencies);
       
-      expect(tooltipSystem.getResponsiveTester()).toBeDefined();
+      expect(tooltipSystem.getResponsiveTester()).toBeNull();
     });
   });
 
@@ -149,7 +141,8 @@ describe('TooltipSystemIntegration', () => {
     });
 
     it('should get external links for a type', () => {
-      const links = tooltipSystem.getExternalLinks('sun');
+      const externalLinks = tooltipSystem.getExternalLinks();
+      const links = externalLinks.get('sun');
       expect(Array.isArray(links)).toBe(true);
     });
 
@@ -161,7 +154,8 @@ describe('TooltipSystemIntegration', () => {
           description: 'A test resource'
         }
       ];
-      expect(() => tooltipSystem.addExternalLinks('test-type', newLinks)).not.toThrow();
+      const externalLinks = tooltipSystem.getExternalLinks();
+      expect(() => externalLinks.add('test-type', newLinks)).not.toThrow();
     });
   });
 
@@ -226,6 +220,8 @@ describe('TooltipSystemIntegration', () => {
     it('should get external links', () => {
       const externalLinks = tooltipSystem.getExternalLinks();
       expect(externalLinks).toBeDefined();
+      expect(typeof externalLinks.get).toBe('function');
+      expect(typeof externalLinks.add).toBe('function');
     });
 
     it('should get responsive tester', () => {
@@ -248,7 +244,7 @@ describe('TooltipSystemIntegration', () => {
   describe('error handling', () => {
     it('should handle initialization errors', async () => {
       const invalidDependencies = null;
-      await expect(tooltipSystem.initialize(invalidDependencies)).rejects.toThrow();
+      await expect(tooltipSystem.initialize(invalidDependencies)).rejects.toThrow('Dependencies are required');
     });
 
     it('should handle operations when not initialized', () => {
@@ -259,26 +255,3 @@ describe('TooltipSystemIntegration', () => {
 });
 
 // Additional tests for individual components can be added here
-describe('TooltipManager', () => {
-  // Tests for TooltipManager can be added here
-});
-
-describe('TooltipIntegration', () => {
-  // Tests for TooltipIntegration can be added here
-});
-
-describe('TooltipPerformanceOptimizer', () => {
-  // Tests for TooltipPerformanceOptimizer can be added here
-});
-
-describe('TooltipPinManager', () => {
-  // Tests for TooltipPinManager can be added here
-});
-
-describe('TooltipExternalLinks', () => {
-  // Tests for TooltipExternalLinks can be added here
-});
-
-describe('TooltipResponsiveTester', () => {
-  // Tests for TooltipResponsiveTester can be added here
-});
